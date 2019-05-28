@@ -1,9 +1,13 @@
 package jp.co.sample.domain;
 
 public class Administrator {
+	/**  ID 主キー*/
 	private Integer id;
+	/**  名前*/
 	private String name;
+	/**  メールアドレス*/
 	private String mailAddress;
+	/**  パスワード*/
 	private String password;
 	
 	@Override
