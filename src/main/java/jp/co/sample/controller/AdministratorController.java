@@ -74,7 +74,7 @@ public class AdministratorController {
 	 * 管理者情報を登録.
 	 * 
 	 * @param form 管理者登録画面から送られたフォーム
-	 * @return 成功時 ログイン画面へ リダイレクト ,失敗時 登録画面にもどる
+	 * @return 成功時:ログイン画面へリダイレクト ,失敗時:登録画面にもどる
 	 */
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
@@ -90,6 +90,13 @@ public class AdministratorController {
 		return "redirect:/";
 	}
 
+	/**
+	 * ログイン処理を行う.
+	 * 
+	 * @param form 管理者ログイン画面から送られるフォーム
+	 * @param　result 入力が間違っている場合のエラーを持つ
+	 * @return　ログイン成功時:従業員リストに遷移, 失敗時:ログイン画面に遷移
+	 */
 	@RequestMapping("/login")
 	public String login(@Validated LoginForm form,BindingResult result) {
 		Administrator administrator=service.findByMailAddressAndPassword(form.getMailAddress(), form.getPassword());

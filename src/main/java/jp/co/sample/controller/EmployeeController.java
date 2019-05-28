@@ -13,6 +13,11 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService service;
 	
+	/**
+	 * 従業員リストを表示.
+	 * 
+	 * @return　従業員リストへ遷移
+　	 */
 	@RequestMapping("/showList")
 	public String index() {
 		return "employee/list";
