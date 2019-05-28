@@ -1,4 +1,4 @@
-package jp.co.sample.domain;
+package jp.co.sample.form;
 
 public class LoginForm {
 	/**  メールアドレス*/
