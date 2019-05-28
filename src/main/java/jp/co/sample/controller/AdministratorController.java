@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jp.co.sample.service.AdministratorService;
 
 @Controller
-@RequestMapping("/administrator")
+@RequestMapping("/")
 public class AdministratorController {
 	
 	@Autowired
@@ -15,7 +15,12 @@ public class AdministratorController {
 	
 	@RequestMapping("")
 	public String index() {
-		return "/administrator/login";
+		return "administrator/login";
+	}
+	
+	@RequestMapping("/toInsert")
+	public String toInsert() {
+		return "administrator/insert";
 	}
 	
 	
