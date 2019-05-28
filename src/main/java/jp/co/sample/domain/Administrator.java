@@ -1,5 +1,11 @@
 package jp.co.sample.domain;
 
+/**
+ * 管理者情報を表すドメイン.
+ * 
+ * @author user
+ *
+ */
 public class Administrator {
 	/**  ID 主キー*/
 	private Integer id;

@@ -9,8 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import jp.co.sample.domain.Administrator;
 
-/**AdministratorクラスのDao
- * @author user
+/**
+ * 管理者テーブルを操作するリポジトリ.
+ * 
+ * @author ayane.tanaka
  *
  */
 @Repository
@@ -20,7 +22,7 @@ public class AdministratorRepository {
 	private NamedParameterJdbcTemplate template;
 
 	/**
-	 * DBから受け取ったデータの格納
+	 * DBから受け取ったデータの格納.
 	 */
 	private final static RowMapper<Administrator> ADMINISTRATOR_ROW_MAPPER = (rs, i) -> {
 		Administrator administrator = new Administrator();
@@ -31,8 +33,10 @@ public class AdministratorRepository {
 		return administrator;
 	};
 
-	/**新規管理者を登録する.
-	 * @param administrator　登録する管理者のデータ
+	/**
+	 * 新規管理者を登録する.
+	 * 
+	 * @param administrator　登録する管理者情報
 	 */
 	public void insert(Administrator administrator) {
 		String sql = "insert into administrators(name,mail_address,password) values (:name,:mailAddress,:password)";
@@ -44,7 +48,9 @@ public class AdministratorRepository {
 		return;
 	}
 
-	/**メールアドレスとパスワードから管理者情報を検索.
+	/**
+	 * メールアドレスとパスワードから管理者情報を検索.
+	 * 
 	 * @param mailAddress メールアドレス
 	 * @param password　パスワード
 	 * @return　存在する場合はデータを、存在しない場合はnullを返す
@@ -52,7 +58,11 @@ public class AdministratorRepository {
 	public Administrator findByMailAddressAndPassword(String mailAddress, String password) {
 		String sql = "select id,name,mail_address,password from administrators where mail_address= :mail and password= :pass";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("mail", mailAddress).addValue("pass", password);
-		return template.queryForObject(sql, param, ADMINISTRATOR_ROW_MAPPER);
+		try {
+			return template.queryForObject(sql, param, ADMINISTRATOR_ROW_MAPPER);
+		}catch(Exception e) {
+			return null;
+		}
 	}
 
 }

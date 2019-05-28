@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import jp.co.sample.domain.Employee;
 
-/**EmployeeクラスのDao.
+/**
+ * 従業員テーブルを操作するリポジトリ.
+ * 
  * @author user
  *
  */
@@ -40,9 +42,12 @@ public class EmployeeRepository {
 		return employee;
 	};
 
-	/**idの一致する従業員データ検索.
+	/**
+	 * idの一致する従業員データ検索.
+	 * 
 	 * @param id 検索したいid
-	 * @return　Employee 検索結果
+	 * @return　Employee 従業員情報　
+	 * @throws IncorrectResultSizeDataAccessException 1件も存在しないときに発生
 	 */
 	public Employee load(Integer id) {
 		String sql = "select id,name,image,gender,hire_date,mail_address,"
@@ -52,8 +57,10 @@ public class EmployeeRepository {
 		return template.queryForObject(sql, param, EMPLOYEE_ROW_MAPPER);
 	}
 
-	/**全従業員のデータ検索.
-	 * @return List<Employee> Employeesテーブルの全データリスト
+	/**
+	 * 全従業員のデータ検索.
+	 * 
+	 * @return List<Employee> 従業員一覧
 	 */
 	public List<Employee> findAll() {
 		String sql = "select id,name,image,gender,hire_date,mail_address,"
@@ -63,7 +70,8 @@ public class EmployeeRepository {
 	}
 
 	/**従業員の扶養人数を更新.
-	 * @param employee 更新したい従業員データ
+	 * 
+	 * @param employee 更新したい従業員情報
 	 */
 	public void update(Employee employee) {
 		String sql = "update employees set dependents_count=:dependentsCount where id=:id";
