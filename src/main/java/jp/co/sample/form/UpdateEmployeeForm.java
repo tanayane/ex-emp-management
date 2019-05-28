@@ -1,7 +1,8 @@
 package jp.co.sample.form;
 
 public class UpdateEmployeeForm {
-
+	/**  ID　主キー*/
+	private Integer id;
 	/**  扶養人数*/
 	private Integer dependentsCount;
 
@@ -9,10 +10,18 @@ public class UpdateEmployeeForm {
 	
 	@Override
 	public String toString() {
-		return "UpdateEmployeeForm [dependentsCount=" + dependentsCount + "]";
+		return "UpdateEmployeeForm [id="+id+",dependentsCount=" + dependentsCount + "]";
 	}
 	
 	//set&get
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public Integer getDependentsCount() {
 		return dependentsCount;
 	}
