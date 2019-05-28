@@ -22,12 +22,9 @@ public class EmployeeService {
 		return repository.findAll();
 	}
 	
-	public Employee save(Employee employee) {
-		return repository.save(employee);
-	}
-	
-	public Employee deleteById(Integer id) {
-		return repository.deleteById(id);
+	public void update(Employee employee) {
+		repository.update(employee);
+		return;
 	}
 
 }

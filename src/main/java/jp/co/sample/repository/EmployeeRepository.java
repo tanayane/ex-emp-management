@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import jp.co.sample.domain.Administrator;
 import jp.co.sample.domain.Employee;
 
 @Repository
@@ -37,11 +36,8 @@ public class EmployeeRepository {
 		return null;
 	}
 	
-	public Employee save(Employee employee) {
-		return null;
+	public void update(Employee employee) {
+		return;
 	}
 	
-	public Employee deleteById(Integer id) {
-		return null;
-	}
 }
