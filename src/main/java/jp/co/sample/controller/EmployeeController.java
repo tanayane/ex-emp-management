@@ -50,5 +50,15 @@ public class EmployeeController {
 		
 	}
 	
+	@RequestMapping("/update")
+	public String update(Integer id,Integer dependentsCount) {
+		Employee employee=new Employee();
+		employee.setId(id);
+		employee.setDependentsCount(dependentsCount);
+		service.update(employee);
+		return "forward:/employee/showList";
+		
+	}
+	
 	
 }
