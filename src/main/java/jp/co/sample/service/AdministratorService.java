@@ -14,20 +14,13 @@ public class AdministratorService {
 	@Autowired
 	private AdministratorRepository repository;
 	
-	public Administrator load(Integer id) {
-		return repository.load(id);
+	public void insert(Administrator administrator) {
+		repository.insert(administrator);
+		return;
 	}
 	
-	public List<Administrator> findAll(){
-		return repository.findAll();
-	}
-	
-	public Administrator save(Administrator administrator) {
-		return repository.save(administrator);
-	}
-	
-	public Administrator deleteById(Integer id) {
-		return repository.deleteById(id);
+	public Administrator findByMailAddressAndPassword(String mailAddress,String password){	
+		return repository.findByMailAddressAndPassword(mailAddress, password);
 	}
 
 }
