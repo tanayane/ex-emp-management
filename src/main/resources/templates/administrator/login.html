@@ -32,8 +32,8 @@
 					<form method="post" action="../employee/list.html" th:action="@{/login}" th:object="${loginForm}">
 						<fieldset>
 							<legend>ログイン</legend>
-							<div class="form-group">
-								<div class="alert alert-danger">
+							<div class="form-group" th:if="${#fields.hasErrors('mailAddress')}">
+								<div class="alert alert-danger" th:errors="*{mailAddress}">
 			                        <p>メールアドレスまたはパスワードが間違っています</p>
 			                    </div>
 							</div>

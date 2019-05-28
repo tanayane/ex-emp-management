@@ -13,8 +13,8 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService service;
 	
-	@RequestMapping("")
+	@RequestMapping("/showList")
 	public String index() {
-		return "/employee/list";
+		return "employee/list";
 	}
 }
