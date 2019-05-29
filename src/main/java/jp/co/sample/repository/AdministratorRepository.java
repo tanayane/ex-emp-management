@@ -36,7 +36,7 @@ public class AdministratorRepository {
 	/**
 	 * 新規管理者を登録する.
 	 * 
-	 * @param administrator　登録する管理者情報
+	 * @param administrator 登録する管理者情報
 	 */
 	public void insert(Administrator administrator) {
 		String sql = "insert into administrators(name,mail_address,password) values (:name,:mailAddress,:password)";
@@ -52,19 +52,52 @@ public class AdministratorRepository {
 	 * メールアドレスとパスワードから管理者情報を検索.
 	 * 
 	 * @param mailAddress メールアドレス
-	 * @param password　パスワード
-	 * @return　存在する場合はデータを、存在しない場合はnullを返す
+	 * @param             password パスワード
+	 * @return 存在する場合はデータを、存在しない場合はnullを返す
 	 */
 	public Administrator findByMailAddressAndPassword(String mailAddress, String password) {
 		String sql = "select id,name,mail_address,password from administrators where mail_address= :mail and password= :pass";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("mail", mailAddress).addValue("pass", password);
 		try {
-			Administrator administrator=template.queryForObject(sql, param, ADMINISTRATOR_ROW_MAPPER);
+			Administrator administrator = template.queryForObject(sql, param, ADMINISTRATOR_ROW_MAPPER);
 			return administrator;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	/**
+	 * idから管理者情報を検索.
+	 * 
+	 * @param id 入力されたid
+	 * @return 存在する場合は管理者情報,存在しない場合はnull
+	 */
+	public Administrator findById(Integer id) {
+		String sql = "select id,name,mail_address,password from administrators where id=:id";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		try {
+			Administrator administrator = template.queryForObject(sql, param, ADMINISTRATOR_ROW_MAPPER);
+			return administrator;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * 管理者情報を更新.
+	 * 
+	 * @param administrator 更新したい管理者情報
+	 */
+	public void update(Administrator administrator) {
+		String sql = "update administrators set name=:name, mail_address=:mailAddress, password=:password where id=:id";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", administrator.getName())
+				.addValue("mailAddress", administrator.getMailAddress())
+				.addValue("password", administrator.getPassword())
+				.addValue("id", administrator.getId());
+		template.update(sql, param);
+		return;
 	}
 
 }

@@ -2,8 +2,10 @@ package jp.co.sample.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jp.co.sample.domain.Administrator;
 import jp.co.sample.form.InsertAdministratorForm;
 import jp.co.sample.form.LoginForm;
+import jp.co.sample.form.ModifyAdministratorForm;
 import jp.co.sample.service.AdministratorService;
 
 /**
@@ -43,6 +46,10 @@ public class AdministratorController {
 		return new LoginForm();
 	}
 
+	@ModelAttribute
+	public ModifyAdministratorForm serUpModifyAdministratorForm() {
+		return new ModifyAdministratorForm();
+	}
 	@Autowired
 	private AdministratorService service;
 
@@ -109,6 +116,7 @@ public class AdministratorController {
 			return index();
 		}
 		session.setAttribute("administratorName", administrator.getName());
+		session.setAttribute("administratorId", administrator.getId());
 		return "forward:/employee/showList";
 	}
 
@@ -123,6 +131,54 @@ public class AdministratorController {
 		return "redirect:/";
 	}
 	
+	/**
+	 * 管理者情報を表示.
+	 * 
+	 * @param form 管理者情報のフォーム
+ 	 * @param model リクエストスコープ
+	 * @return 管理者情報表示画面(ログアウト時はログイン画面)
+	 */
+	@RequestMapping("/infomation")
+	public String information(ModifyAdministratorForm form,Model model) {
+		String name=(String)session.getAttribute("administratorName");
+		if(name==null) {
+			return "redirect:/";
+		}
+		Integer id=(Integer)session.getAttribute("administratorId");
+		BeanUtils.copyProperties(service.findById(id),form );
+		form.setValidatedPassword(form.getPassword());
+		return "/administrator/information";
+	}
 	
+	/**
+	 * 管理者情報を更新.
+	 * 
+	 * @param form 新しい管理者情報
+	 * @param result 入力チェック
+	 * @param model リクエストスコープ
+	 * @return 成功失敗どちらも管理者情報表示画面
+	 */
+	@RequestMapping("/modify")
+	public String modify(@Validated ModifyAdministratorForm form,BindingResult result,Model model) {
+		String name=(String)session.getAttribute("administratorName");
+		if(name==null) {
+			return "redirect:/";
+		}
+		if (result.hasErrors()) {
+			//form.setValidatedPassword(form.getPassword());
+			return information(form,model);
+		}
+		if (!form.getPassword().equals(form.getValidatedPassword())) {
+			result.rejectValue("validatedPassword", null, "上記と同じパスワードを入力してください");
+			return information(form,model);
+		}
+
+		Administrator administrator= service.findById(form.getId());
+		BeanUtils.copyProperties(form, administrator);
+		service.update(administrator);
+		result.rejectValue("id" ,null,"情報が更新されました");
+		return information(form,model);
+		
+	}
 
 }

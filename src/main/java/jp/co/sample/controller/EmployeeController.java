@@ -42,7 +42,7 @@ public class EmployeeController {
 	/**
 	 * 従業員リスト画面で従業員を全件表示.
 	 * 
-	 * @return 従業員リスト画面
+	 * @return 従業員リスト画面(ログアウト時はログイン画面)
 	 */
 	@RequestMapping("/showList")
 	public String showList(Model model) {
@@ -60,7 +60,7 @@ public class EmployeeController {
 	 * 
 	 * @param id    指定された従業員id
 	 * @param model リクエストスコープ 従業員情報を格納する
-	 * @return 従業員詳細画面
+	 * @return 従業員詳細画面(ログアウト時はログイン画面)
 	 */
 	@RequestMapping("/showDetail")
 	public String showDetail(Integer id, Model model) {
@@ -79,7 +79,7 @@ public class EmployeeController {
 	 * 
 	 * @param form 更新する従業員idと新たな扶養人数
 	 * @param result 入力値チェックの結果
-	 * @return 従業員リスト画面
+	 * @return 従業員リスト画面(ログアウト時はログイン画面)
 	 */
 	@RequestMapping("/update")
 	public String update(@Validated UpdateEmployeeForm form, BindingResult result,Model model) {
