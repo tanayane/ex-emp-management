@@ -122,5 +122,7 @@ public class AdministratorController {
 		session.invalidate();
 		return "redirect:/";
 	}
+	
+	
 
 }

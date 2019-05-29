@@ -2,6 +2,8 @@ package jp.co.sample.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,10 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService service;
 
+	@Autowired
+	private HttpSession session;
+
+	
 	/**
 	 * 従業員リスト画面で従業員を全件表示.
 	 * 
@@ -40,6 +46,10 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/showList")
 	public String showList(Model model) {
+		String name=(String)session.getAttribute("administratorName");
+		if(name==null) {
+			return "redirect:/";
+		}
 		List<Employee> employeeList = service.showList();
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
