@@ -64,6 +64,10 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/showDetail")
 	public String showDetail(Integer id, Model model) {
+		String name=(String)session.getAttribute("administratorName");
+		if(name==null) {
+			return "redirect:/";
+		}
 		Employee employee = service.showDetail(id);
 		model.addAttribute("employee", employee);
 		return "employee/detail";
@@ -79,6 +83,10 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/update")
 	public String update(@Validated UpdateEmployeeForm form, BindingResult result,Model model) {
+		String name=(String)session.getAttribute("administratorName");
+		if(name==null) {
+			return "redirect:/";
+		}
 		if (result.hasErrors()) {
 			return showDetail(form.getId(),model);
 		}
