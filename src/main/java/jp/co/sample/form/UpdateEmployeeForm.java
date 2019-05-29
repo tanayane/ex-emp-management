@@ -1,9 +1,14 @@
 package jp.co.sample.form;
 
+
+import javax.validation.constraints.NotNull;
+
+
 public class UpdateEmployeeForm {
 	/**  ID　主キー*/
 	private Integer id;
 	/**  扶養人数*/
+	@NotNull(message="扶養人数を入力してください")
 	private Integer dependentsCount;
 
 	

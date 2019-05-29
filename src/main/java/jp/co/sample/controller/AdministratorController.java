@@ -93,21 +93,21 @@ public class AdministratorController {
 	 * ログイン処理を行う.
 	 * 
 	 * @param form 管理者ログイン画面から送られるフォーム
-	 * @param　result 入力が間違っている場合のエラーを持つ
-	 * @return　ログイン成功時:従業員リストに遷移, 失敗時:ログイン画面に遷移
+	 * @param      result 入力が間違っている場合のエラーを持つ
+	 * @return ログイン成功時:従業員リストに遷移, 失敗時:ログイン画面に遷移
 	 */
 	@RequestMapping("/login")
-	public String login(@Validated LoginForm form,BindingResult result) {
-		Administrator administrator=service.findByMailAddressAndPassword(form.getMailAddress(), form.getPassword());
-		
-		if(administrator==null) {
-			result.rejectValue("mailAddress", null,	"メールアドレスまたはパスワードが間違っています");
+	public String login(@Validated LoginForm form, BindingResult result) {
+		Administrator administrator = service.findByMailAddressAndPassword(form.getMailAddress(), form.getPassword());
+
+		if (administrator == null) {
+			result.rejectValue("mailAddress", null, "メールアドレスまたはパスワードが間違っています");
 			return index();
 		}
-		session.setAttribute("administratorName",administrator.getName());
+		session.setAttribute("administratorName", administrator.getName());
 		return "forward:/employee/showList";
 	}
-	
+
 	/**
 	 * ログアウト処理を行う.
 	 * 
