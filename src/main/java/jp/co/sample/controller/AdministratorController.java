@@ -56,6 +56,10 @@ public class AdministratorController {
 	 */
 	@RequestMapping("")
 	public String index() {
+		String name=(String)session.getAttribute("administratorName");
+		if(name!=null) {
+			return "forward:/employee/showList";
+		}
 		return "administrator/login";
 	}
 
@@ -93,7 +97,7 @@ public class AdministratorController {
 	 * ログイン処理を行う.
 	 * 
 	 * @param form 管理者ログイン画面から送られるフォーム
-	 * @param      result 入力が間違っている場合のエラーを持つ
+	 * @param result 入力が間違っている場合のエラーを持つ
 	 * @return ログイン成功時:従業員リストに遷移, 失敗時:ログイン画面に遷移
 	 */
 	@RequestMapping("/login")
