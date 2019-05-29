@@ -1,5 +1,6 @@
 package jp.co.sample.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -26,7 +27,7 @@ import jp.co.sample.service.EmployeeService;
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController {
-	
+
 	@ModelAttribute
 	public UpdateEmployeeForm setUpUpdateEmployeeForm() {
 		return new UpdateEmployeeForm();
@@ -38,20 +39,26 @@ public class EmployeeController {
 	@Autowired
 	private HttpSession session;
 
-	
 	/**
 	 * 従業員リスト画面で従業員を全件表示.
 	 * 
 	 * @return 従業員リスト画面(ログアウト時はログイン画面)
 	 */
 	@RequestMapping("/showList")
-	public String showList(Model model) {
-		String name=(String)session.getAttribute("administratorName");
-		if(name==null) {
+	public String showList(Integer page, Model model) {
+		String name = (String) session.getAttribute("administratorName");
+		if (name == null) {
 			return "redirect:/";
 		}
+		if (page == null) {
+			page = 1;
+		}
 		List<Employee> employeeList = service.showList();
-		model.addAttribute("employeeList", employeeList);
+		List<Employee> fragmentsEmployeeList = new ArrayList<>();
+		for (int i = (page-1)*10+1; i <= page * 10; i++) {
+			fragmentsEmployeeList.add(employeeList.get(i));
+		}
+		model.addAttribute("employeeList", fragmentsEmployeeList);
 		return "employee/list";
 	}
 
@@ -64,8 +71,8 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/showDetail")
 	public String showDetail(Integer id, Model model) {
-		String name=(String)session.getAttribute("administratorName");
-		if(name==null) {
+		String name = (String) session.getAttribute("administratorName");
+		if (name == null) {
 			return "redirect:/";
 		}
 		Employee employee = service.showDetail(id);
@@ -77,18 +84,18 @@ public class EmployeeController {
 	/**
 	 * 従業員の扶養人数を更新.
 	 * 
-	 * @param form 更新する従業員idと新たな扶養人数
+	 * @param form   更新する従業員idと新たな扶養人数
 	 * @param result 入力値チェックの結果
 	 * @return 従業員リスト画面(ログアウト時はログイン画面)
 	 */
 	@RequestMapping("/update")
-	public String update(@Validated UpdateEmployeeForm form, BindingResult result,Model model) {
-		String name=(String)session.getAttribute("administratorName");
-		if(name==null) {
+	public String update(@Validated UpdateEmployeeForm form, BindingResult result, Model model) {
+		String name = (String) session.getAttribute("administratorName");
+		if (name == null) {
 			return "redirect:/";
 		}
 		if (result.hasErrors()) {
-			return showDetail(form.getId(),model);
+			return showDetail(form.getId(), model);
 		}
 		Employee employee = service.showDetail(form.getId());
 		BeanUtils.copyProperties(form, employee);

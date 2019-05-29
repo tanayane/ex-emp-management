@@ -140,7 +140,7 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/infomation")
 	public String information(ModifyAdministratorForm form,Model model) {
-		String name=(String)session.getAttribute("administratorName");
+		String name=(String)session.getAttribute("administratorName");//ログインチェック
 		if(name==null) {
 			return "redirect:/";
 		}
@@ -160,20 +160,24 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/modify")
 	public String modify(@Validated ModifyAdministratorForm form,BindingResult result,Model model) {
-		String name=(String)session.getAttribute("administratorName");
+		String name=(String)session.getAttribute("administratorName");  //ログインチェック
 		if(name==null) {
 			return "redirect:/";
 		}
-		if (result.hasErrors()) {
-			//form.setValidatedPassword(form.getPassword());
+		Administrator administrator= service.findById(form.getId());
+		if (result.hasErrors()) { 										 //入力チェック
+			BeanUtils.copyProperties(form, administrator);
+			if(result.hasFieldErrors("password")) {
+				form.setValidatedPassword("");	
+			}
 			return information(form,model);
 		}
-		if (!form.getPassword().equals(form.getValidatedPassword())) {
+		if (!form.getPassword().equals(form.getValidatedPassword())) { //パスワード確認チェック
+			BeanUtils.copyProperties(form, administrator);
 			result.rejectValue("validatedPassword", null, "上記と同じパスワードを入力してください");
 			return information(form,model);
 		}
 
-		Administrator administrator= service.findById(form.getId());
 		BeanUtils.copyProperties(form, administrator);
 		service.update(administrator);
 		result.rejectValue("id" ,null,"情報が更新されました");
