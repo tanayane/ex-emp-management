@@ -55,10 +55,17 @@ public class EmployeeController {
 		}
 		List<Employee> employeeList = service.showList();
 		List<Employee> fragmentsEmployeeList = new ArrayList<>();
-		for (int i = (page-1)*10+1; i <= page * 10; i++) {
-			fragmentsEmployeeList.add(employeeList.get(i));
+		try {
+			for (int i = (page-1)*10+1; i <= page * 10; i++) {
+				fragmentsEmployeeList.add(employeeList.get(i));
+			}
+		}catch(Exception e) {
+			
+		}finally{
+			model.addAttribute("employeeList", fragmentsEmployeeList);
+			model.addAttribute("page",page);
+			model.addAttribute("size", employeeList.size());
 		}
-		model.addAttribute("employeeList", fragmentsEmployeeList);
 		return "employee/list";
 	}
 
